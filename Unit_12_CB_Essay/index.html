@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit 12 Exam-Style Question</title>
+<style>
+  :root {
+    --teal: #1b7f8e;
+    --teal-dark: #0f5964;
+    --bg-light: #cfe8ea;
+    --card-bg: #a9d7db;
+    --bubble-blue: #d7ecf5;
+    --bubble-blue-border: #4a90a4;
+    --bubble-yellow: #fdf1c8;
+    --bubble-yellow-border: #d9a441;
+    --text-dark: #1a2b2e;
+    --white: #ffffff;
+    --success: #2e7d32;
+    --warning: #c0392b;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: var(--bg-light);
+    color: var(--text-dark);
+    min-height: 100vh;
+  }
+  .screen {
+    display: none;
+    min-height: 100vh;
+    flex-direction: column;
+    align-items: center;
+    padding: 24px;
+  }
+  .screen.active { display: flex; }
+  .panel {
+    background: var(--white);
+    border-radius: 12px;
+    max-width: 900px;
+    width: 100%;
+    padding: 32px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+  }
+  h1 { color: var(--teal-dark); }
+  input[type=text] {
+    font-size: 1.1em;
+    padding: 10px 14px;
+    border-radius: 8px;
+    border: 2px solid var(--teal);
+    width: 100%;
+    max-width: 360px;
+    margin: 16px 0;
+  }
+  button {
+    background: var(--teal);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 1em;
+    cursor: pointer;
+    margin-top: 12px;
+    margin-right: 8px;
+  }
+  button:hover { background: var(--teal-dark); }
+  button:disabled { background: #999; cursor: not-allowed; }
+
+  .question-banner {
+    background: var(--teal);
+    color: white;
+    padding: 14px 20px;
+    border-radius: 8px 8px 0 0;
+    font-weight: bold;
+    font-size: 1.1em;
+    letter-spacing: 0.5px;
+  }
+  .question-card {
+    background: var(--card-bg);
+    padding: 20px;
+    border-radius: 0 0 8px 8px;
+    margin-bottom: 20px;
+  }
+  .question-card .subtitle { font-weight: bold; margin-bottom: 8px; }
+  .question-card p { margin: 10px 0; line-height: 1.5; }
+  .question-card b { font-weight: 700; }
+
+  .bubbles { display: flex; flex-wrap: wrap; gap: 16px; margin: 20px 0; }
+  .bubble {
+    flex: 1 1 260px;
+    border-radius: 20px;
+    padding: 16px 20px;
+    font-style: italic;
+  }
+  .bubble.blue { background: var(--bubble-blue); border: 2px solid var(--bubble-blue-border); }
+  .bubble.yellow { background: var(--bubble-yellow); border: 2px solid var(--bubble-yellow-border); }
+
+  textarea {
+    width: 100%;
+    min-height: 220px;
+    font-size: 1em;
+    padding: 14px;
+    border-radius: 8px;
+    border: 2px solid var(--teal);
+    font-family: inherit;
+    resize: vertical;
+  }
+  .word-count { margin-top: 8px; font-weight: bold; }
+  .word-count.ok { color: var(--success); }
+  .word-count.off { color: var(--warning); }
+
+  .marks-info { margin-top: 16px; font-size: 0.95em; color: var(--teal-dark); font-weight: 600; }
+
+  .essay-display {
+    background: #f4f4f4;
+    border-radius: 8px;
+    padding: 16px;
+    white-space: pre-wrap;
+    line-height: 1.5;
+    margin: 12px 0 24px 0;
+  }
+  .feedback-box {
+    background: var(--bubble-blue);
+    border: 2px solid var(--bubble-blue-border);
+    border-radius: 8px;
+    padding: 18px;
+    margin-bottom: 20px;
+  }
+  .feedback-score { font-size: 1.3em; font-weight: bold; color: var(--teal-dark); margin-bottom: 10px; }
+  .feedback-note { font-style: italic; color: #555; }
+  .spinner {
+    border: 4px solid #ddd;
+    border-top: 4px solid var(--teal);
+    border-radius: 50%;
+    width: 28px;
+    height: 28px;
+    animation: spin 0.8s linear infinite;
+    margin: 10px 0;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+</style>
+</head>
+<body>
+
+<!-- START SCREEN -->
+<div id="start-screen" class="screen active">
+  <div class="panel" style="text-align:center;">
+    <h1>Unit 12 Exam-Style Question</h1>
+    <p>Coursebook p. 179</p>
+    <p>Enter your name to begin:</p>
+    <input type="text" id="student-name-input" placeholder="Your name">
+    <br>
+    <button id="start-btn" disabled>Start</button>
+  </div>
+</div>
+
+<!-- ESSAY SCREEN -->
+<div id="essay-screen" class="screen">
+  <div class="panel">
+    <div class="question-banner">EXAM-STYLE QUESTION</div>
+    <div class="question-card">
+      <div class="subtitle">Writing, formal writing</div>
+      <p>The headteacher at your school wants students to get involved in raising money for charity. Your teacher has asked you to write an essay for your school magazine.</p>
+      <p><b>In your essay, suggest different ways that students could raise money for charity, and explain what kind of charities you think the money should be for and why.</b></p>
+      <p>Opposite are some comments from other students.</p>
+      <p><b>Now write an essay for the school magazine.</b></p>
+      <p>The comments opposite may give you some ideas, and you should also use some ideas of your own.</p>
+      <p><b>Write about 120 to 160 words.</b></p>
+      <p>You will receive up to 6 marks for the content of your essay, and up to 9 marks for the language used.</p>
+    </div>
+
+    <div class="bubbles">
+      <div class="bubble blue">People are more willing to donate money to charity if the person asking them is prepared to do something special in return.</div>
+      <div class="bubble yellow">If the money is raised by young people, then it should benefit young people.</div>
+    </div>
+
+    <textarea id="essay-input" placeholder="Write your essay here..."></textarea>
+    <div class="word-count" id="word-count">0 words</div>
+    <div class="marks-info">Total: 15 marks (6 content, 9 language)</div>
+    <button id="submit-essay-btn">Submit Essay</button>
+  </div>
+</div>
+
+<!-- REVIEW SCREEN -->
+<div id="review-screen" class="screen">
+  <div class="panel">
+    <h1>Your Essay</h1>
+    <div class="essay-display" id="essay-display"></div>
+
+    <h1>AI Feedback</h1>
+    <div class="feedback-box" id="feedback-box">
+      <div class="spinner" id="feedback-spinner"></div>
+      <div id="feedback-content"></div>
+    </div>
+
+    <button id="retry-feedback-btn" style="display:none;">Try again for AI feedback</button>
+    <button id="finish-btn">Finish</button>
+    <p id="finish-note" style="display:none; color: #2e7d32; font-weight:bold;">Your work has been submitted. You may close this page.</p>
+  </div>
+</div>
+
+<script>
+  var FEEDBACK_PROXY_ENDPOINT = 'PLACEHOLDER_FEEDBACK_PROXY_URL';
+  var ESSAY_DATA_ENDPOINT = 'https://script.google.com/macros/s/AKfycbwNhsD9-6Zxcm9zz2Rq3uCwx8jxbu3KPYcLULLtjV85zPoUsCmAp5xcNnXepWfOitUSBA/exec';
+  var ACTIVITY_NAME = 'Unit 12 Exam-Style Question (Coursebook p. 179)';
+
+  var studentName = '';
+  var startTime = null;
+  var essayText = '';
+  var currentScoreText = 'N/A (AI feedback unavailable)';
+  var dataSubmitted = false;
+
+  var nameInput = document.getElementById('student-name-input');
+  var startBtn = document.getElementById('start-btn');
+  var essayInput = document.getElementById('essay-input');
+  var wordCountEl = document.getElementById('word-count');
+  var submitEssayBtn = document.getElementById('submit-essay-btn');
+  var essayDisplay = document.getElementById('essay-display');
+  var feedbackSpinner = document.getElementById('feedback-spinner');
+  var feedbackContent = document.getElementById('feedback-content');
+  var retryBtn = document.getElementById('retry-feedback-btn');
+  var finishBtn = document.getElementById('finish-btn');
+  var finishNote = document.getElementById('finish-note');
+
+  nameInput.addEventListener('input', function() {
+    startBtn.disabled = nameInput.value.trim().length === 0;
+  });
+
+  startBtn.addEventListener('click', function() {
+    studentName = nameInput.value.trim();
+    startTime = Date.now();
+    showScreen('essay-screen');
+  });
+
+  essayInput.addEventListener('input', function() {
+    var words = essayInput.value.trim().length === 0 ? 0 : essayInput.value.trim().split(/\s+/).length;
+    wordCountEl.textContent = words + ' words (aim for 120-160)';
+    wordCountEl.className = 'word-count ' + (words >= 120 && words <= 160 ? 'ok' : 'off');
+  });
+
+  submitEssayBtn.addEventListener('click', function() {
+    essayText = essayInput.value.trim();
+    if (essayText.length === 0) {
+      alert('Please write your essay before submitting.');
+      return;
+    }
+    essayDisplay.textContent = essayText;
+    showScreen('review-screen');
+    requestFeedback();
+  });
+
+  retryBtn.addEventListener('click', function() {
+    requestFeedback();
+  });
+
+  finishBtn.addEventListener('click', function() {
+    submitEssayData();
+  });
+
+  function showScreen(id) {
+    var screens = document.querySelectorAll('.screen');
+    for (var i = 0; i < screens.length; i++) { screens[i].classList.remove('active'); }
+    document.getElementById(id).classList.add('active');
+  }
+
+  function requestFeedback() {
+    retryBtn.style.display = 'none';
+    feedbackSpinner.style.display = 'block';
+    feedbackContent.innerHTML = '';
+
+    var markScheme = 'CONTENT (0-6 marks): ' +
+      '5-6: task fulfilled, content fully relevant throughout, consistently appropriate style for the text type, excellent sense of purpose and audience, content very well developed. ' +
+      '3-4: task generally fulfilled, content generally relevant, generally appropriate style, generally good sense of purpose and audience, content generally developed. ' +
+      '1-2: task only partially fulfilled, content only partially relevant, style inconsistent or inappropriate, insufficient sense of purpose and audience, limited attempt to develop content. ' +
+      '0: no creditable response. ' +
+      'LANGUAGE (0-9 marks): ' +
+      '7-9: content communicated skilfully and appropriately, wide range of common and less common vocabulary used appropriately, wide range of simple and complex structures, high accuracy with only occasional errors that do not impede communication, effectively organised and sequenced, wide range of linking words/cohesive devices used appropriately. ' +
+      '4-6: content communicated clearly, a range of common vocabulary used appropriately with some attempt at less common vocabulary, a range of simple structures with some attempt at complex structures, generally good accuracy with errors that do not generally impede communication, generally well organised and sequenced, a range of linking words/cohesive devices generally used appropriately. ' +
+      '1-3: content communicated but lacks clarity, only common vocabulary used, only simple structures used, lack of control of language with errors that impede communication, limited attempt at organisation and sequencing, limited attempt to use linking words/cohesive devices. ' +
+      '0: no creditable content.';
+
+    var prompt = 'You are an examiner marking a Cambridge IGCSE ESL (0510) formal essay using the official mark scheme. ' +
+      'Task: "The headteacher at your school wants students to get involved in raising money for charity. Suggest different ways that students could raise money for charity, and explain what kind of charities the money should be for and why. Write about 120 to 160 words." ' +
+      'Mark scheme: ' + markScheme + ' ' +
+      'Student essay: "' + essayText.replace(/"/g, "'") + '" ' +
+      'Respond with ONLY a JSON object, no markdown, no code fences, in exactly this shape: ' +
+      '{"contentMark": <0-6 integer>, "languageMark": <0-9 integer>, "comments": "<2-4 sentences of feedback explaining both marks, written directly for the student>"}';
+
+    fetch(FEEDBACK_PROXY_ENDPOINT, {
+      method: 'POST',
+      body: JSON.stringify({ prompt: prompt })
+    })
+    .then(function(res) {
+      if (!res.ok) throw new Error('Request failed with status ' + res.status);
+      return res.json();
+    })
+    .then(function(parsed) {
+      if (parsed.error) throw new Error(parsed.message || 'Proxy returned an error');
+      var total = parsed.contentMark + parsed.languageMark;
+      currentScoreText = total + '/15 (Content: ' + parsed.contentMark + '/6, Language: ' + parsed.languageMark + '/9)';
+      feedbackSpinner.style.display = 'none';
+      feedbackContent.innerHTML =
+        '<div class="feedback-score">' + currentScoreText + '</div>' +
+        '<div>' + parsed.comments + '</div>';
+    })
+    .catch(function(err) {
+      console.error('AI feedback failed:', err);
+      feedbackSpinner.style.display = 'none';
+      feedbackContent.innerHTML = '<div class="feedback-note">AI feedback is not available right now. Your teacher will review your essay directly.</div>';
+      retryBtn.style.display = 'inline-block';
+      retryBtn.textContent = 'Try again for AI feedback';
+    });
+  }
+
+  function submitEssayData() {
+    if (dataSubmitted) return;
+    dataSubmitted = true;
+
+    var durationMinutes = startTime ? Math.max(1, Math.round((Date.now() - startTime) / 60000)) : '';
+
+    fetch(ESSAY_DATA_ENDPOINT, {
+      method: 'POST',
+      body: JSON.stringify({
+        activity: ACTIVITY_NAME,
+        studentName: studentName,
+        duration: durationMinutes,
+        score: currentScoreText,
+        essayResponse: essayText
+      })
+    }).catch(function(err) {
+      console.error('Data submission failed:', err);
+    });
+
+    finishBtn.disabled = true;
+    retryBtn.style.display = 'none';
+    finishNote.style.display = 'block';
+  }
+</script>
+</body>
+</html>
