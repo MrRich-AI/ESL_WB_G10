@@ -327,14 +327,20 @@
     if (dataSubmitted) return;
     dataSubmitted = true;
 
-    var durationMinutes = startTime ? Math.max(1, Math.round((Date.now() - startTime) / 60000)) : '';
+    var durationText = '';
+    if (startTime) {
+      var elapsedSeconds = Math.max(0, Math.round((Date.now() - startTime) / 1000));
+      var mins = Math.floor(elapsedSeconds / 60);
+      var secs = elapsedSeconds % 60;
+      durationText = mins + 'min ' + secs + 'sec';
+    }
 
     fetch(ESSAY_DATA_ENDPOINT, {
       method: 'POST',
       body: JSON.stringify({
         activity: ACTIVITY_NAME,
         studentName: studentName,
-        duration: durationMinutes,
+        duration: durationText,
         score: currentScoreText,
         feedback: currentFeedbackText,
         essayResponse: essayText
