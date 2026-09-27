@@ -129,6 +129,8 @@
   }
   .feedback-score { font-size: 1.3em; font-weight: bold; color: var(--teal-dark); margin-bottom: 10px; }
   .feedback-note { font-style: italic; color: #555; }
+  #feedback-loading-note { font-style: italic; color: var(--teal-dark); margin-top: 6px; }
+  .finish-instruction { font-weight: 600; color: var(--teal-dark); margin-top: 20px; }
   .spinner {
     border: 4px solid #ddd;
     border-top: 4px solid var(--teal);
@@ -191,10 +193,12 @@
     <h1>AI Feedback</h1>
     <div class="feedback-box" id="feedback-box">
       <div class="spinner" id="feedback-spinner"></div>
+      <div id="feedback-loading-note">This may take a few moments — please do not close this window.</div>
       <div id="feedback-content"></div>
     </div>
 
     <button id="retry-feedback-btn" style="display:none;">Try again for AI feedback</button>
+    <p class="finish-instruction">Click <b>Finish</b> below to submit your work to your teacher. Your work is not submitted until you click Finish.</p>
     <button id="finish-btn">Finish</button>
     <p id="finish-note" style="display:none; color: #2e7d32; font-weight:bold;">Your work has been submitted. You may close this page.</p>
   </div>
@@ -209,6 +213,7 @@
   var startTime = null;
   var essayText = '';
   var currentScoreText = 'N/A (AI feedback unavailable)';
+  var currentFeedbackText = 'N/A (AI feedback unavailable)';
   var dataSubmitted = false;
 
   var nameInput = document.getElementById('student-name-input');
@@ -218,6 +223,7 @@
   var submitEssayBtn = document.getElementById('submit-essay-btn');
   var essayDisplay = document.getElementById('essay-display');
   var feedbackSpinner = document.getElementById('feedback-spinner');
+  var feedbackLoadingNote = document.getElementById('feedback-loading-note');
   var feedbackContent = document.getElementById('feedback-content');
   var retryBtn = document.getElementById('retry-feedback-btn');
   var finishBtn = document.getElementById('finish-btn');
@@ -267,6 +273,7 @@
   function requestFeedback() {
     retryBtn.style.display = 'none';
     feedbackSpinner.style.display = 'block';
+    feedbackLoadingNote.style.display = 'block';
     feedbackContent.innerHTML = '';
 
     var markScheme = 'CONTENT (0-6 marks): ' +
@@ -299,7 +306,9 @@
       if (parsed.error) throw new Error(parsed.message || 'Proxy returned an error');
       var total = parsed.contentMark + parsed.languageMark;
       currentScoreText = total + '/15 (Content: ' + parsed.contentMark + '/6, Language: ' + parsed.languageMark + '/9)';
+      currentFeedbackText = parsed.comments;
       feedbackSpinner.style.display = 'none';
+      feedbackLoadingNote.style.display = 'none';
       feedbackContent.innerHTML =
         '<div class="feedback-score">' + currentScoreText + '</div>' +
         '<div>' + parsed.comments + '</div>';
@@ -307,6 +316,7 @@
     .catch(function(err) {
       console.error('AI feedback failed:', err);
       feedbackSpinner.style.display = 'none';
+      feedbackLoadingNote.style.display = 'none';
       feedbackContent.innerHTML = '<div class="feedback-note">AI feedback is not available right now. Your teacher will review your essay directly.</div>';
       retryBtn.style.display = 'inline-block';
       retryBtn.textContent = 'Try again for AI feedback';
@@ -326,6 +336,7 @@
         studentName: studentName,
         duration: durationMinutes,
         score: currentScoreText,
+        feedback: currentFeedbackText,
         essayResponse: essayText
       })
     }).catch(function(err) {
