@@ -150,8 +150,10 @@
   <div class="panel" style="text-align:center;">
     <h1>Unit 12 Exam-Style Question</h1>
     <p>Coursebook p. 179</p>
-    <p>Enter your name to begin:</p>
+    <p>Enter your name and class to begin:</p>
     <input type="text" id="student-name-input" placeholder="Your name">
+    <br>
+    <input type="text" id="student-class-input" placeholder="Your class">
     <br>
     <button id="start-btn" disabled>Start</button>
   </div>
@@ -210,6 +212,7 @@
   var ACTIVITY_NAME = 'Unit 12 Exam-Style Question (Coursebook p. 179)';
 
   var studentName = '';
+  var studentClass = '';
   var startTime = null;
   var essayText = '';
   var currentScoreText = 'N/A (AI feedback unavailable)';
@@ -217,6 +220,7 @@
   var dataSubmitted = false;
 
   var nameInput = document.getElementById('student-name-input');
+  var classInput = document.getElementById('student-class-input');
   var startBtn = document.getElementById('start-btn');
   var essayInput = document.getElementById('essay-input');
   var wordCountEl = document.getElementById('word-count');
@@ -229,12 +233,15 @@
   var finishBtn = document.getElementById('finish-btn');
   var finishNote = document.getElementById('finish-note');
 
-  nameInput.addEventListener('input', function() {
-    startBtn.disabled = nameInput.value.trim().length === 0;
-  });
+  function updateStartBtnState() {
+    startBtn.disabled = nameInput.value.trim().length === 0 || classInput.value.trim().length === 0;
+  }
+  nameInput.addEventListener('input', updateStartBtnState);
+  classInput.addEventListener('input', updateStartBtnState);
 
   startBtn.addEventListener('click', function() {
     studentName = nameInput.value.trim();
+    studentClass = classInput.value.trim();
     startTime = Date.now();
     showScreen('essay-screen');
   });
@@ -339,6 +346,7 @@
       method: 'POST',
       body: JSON.stringify({
         activity: ACTIVITY_NAME,
+        studentClass: studentClass,
         studentName: studentName,
         duration: durationText,
         score: currentScoreText,
