@@ -345,8 +345,17 @@
         feedback: currentFeedbackText,
         essayResponse: essayText
       })
-    }).catch(function(err) {
-      console.error('Data submission failed:', err);
+    })
+    .then(function(res) {
+      return res.text().then(function(text) {
+        console.log('Essay Data submission response (status ' + res.status + '):', text);
+        if (!res.ok) {
+          console.error('Essay Data submission returned a non-OK status. The row may not have been saved.');
+        }
+      });
+    })
+    .catch(function(err) {
+      console.error('Essay Data submission failed (network error):', err);
     });
 
     finishBtn.disabled = true;
