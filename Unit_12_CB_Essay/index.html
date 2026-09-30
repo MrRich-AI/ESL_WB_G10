@@ -294,12 +294,17 @@
       '1-3: content communicated but lacks clarity, only common vocabulary used, only simple structures used, lack of control of language with errors that impede communication, limited attempt at organisation and sequencing, limited attempt to use linking words/cohesive devices. ' +
       '0: no creditable content.';
 
-    var prompt = 'You are an examiner marking a Cambridge IGCSE ESL (0510) formal essay using the official mark scheme. ' +
+    var prompt = 'You are an experienced, strict Cambridge IGCSE ESL (0510) examiner marking a formal essay against the official mark scheme below. ' +
+      'Mark rigorously and consistently, exactly as a real examiner would in a live exam session — do not be encouraging or lenient, and do not give credit for effort, length, or good intentions alone. ' +
+      'Award marks strictly on evidence in the text: every error in grammar, spelling, word choice, register, or organisation counts against Language, even errors that are common for ESL learners (e.g. subject-verb agreement, missing/incorrect articles, preposition errors, tense mistakes, word order) — do not overlook or excuse these. ' +
+      'For Content, only credit ideas that are actually relevant to the task, genuinely developed (not just listed), and appropriately targeted at the stated audience and purpose; generic or superficial points should not be marked as "well developed". ' +
+      'If the response is well under or well over the 120-160 word target, or drifts off-topic, this should count against task fulfilment. ' +
+      'If a response could plausibly fall into two adjacent bands, choose the LOWER band unless the evidence clearly and fully supports the higher one. ' +
       'Task: "The headteacher at your school wants students to get involved in raising money for charity. Suggest different ways that students could raise money for charity, and explain what kind of charities the money should be for and why. Write about 120 to 160 words." ' +
       'Mark scheme: ' + markScheme + ' ' +
       'Student essay: "' + essayText.replace(/"/g, "'") + '" ' +
       'Respond with ONLY a JSON object, no markdown, no code fences, in exactly this shape: ' +
-      '{"contentMark": <0-6 integer>, "languageMark": <0-9 integer>, "comments": "<2-4 sentences of feedback explaining both marks, written directly for the student>"}';
+      '{"contentMark": <0-6 integer>, "languageMark": <0-9 integer>, "comments": "<2-4 sentences of specific, honest feedback explaining both marks, naming the actual errors or gaps that cost marks, written directly for the student>"}';
 
     fetch(FEEDBACK_PROXY_ENDPOINT, {
       method: 'POST',
