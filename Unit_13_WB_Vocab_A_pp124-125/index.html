@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit 13 WB Vocab A pp. 124-125</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#151515; --muted:#4a4a4a; --line:#c4c4c4; --page:#ffffff; --desk:#d6d6d6;
+  --ok:#17692f; --okbg:#e5f3e9; --bad:#a8231b; --badbg:#fbeae8; --soft:#f3f3f3;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;overflow-x:hidden}
+body{background:var(--desk);font-family:'Source Sans 3',Arial,Helvetica,sans-serif;color:var(--ink);font-size:18px;line-height:1.5}
+.page{max-width:1120px;margin:24px auto;background:var(--page);box-shadow:0 3px 14px rgba(0,0,0,.2);min-height:calc(100vh - 48px);padding-bottom:40px}
+.band{background:linear-gradient(#a2a2a2 0%,#cfcfcf 40%,#f2f2f2 80%,#fff 100%);padding:36px 56px 22px}
+#s-act .content,#s-review .content{padding-top:34px}
+.band h1{margin:0;font-weight:400;font-size:46px;letter-spacing:-.5px;line-height:1.15}
+.band h1 .chev{font-weight:300;color:#3a3a3a;margin-right:8px}
+.band h2{margin:16px 0 0;font-weight:400;font-size:29px}
+.content{padding:18px 56px 0}
+.rule{border:0;border-top:1.5px solid #333;margin:0 56px}
+.screen{display:none}
+.screen.active{display:block}
+
+/* Generic */
+.btn{font-family:inherit;font-size:17px;font-weight:600;border:2px solid #151515;background:#151515;color:#fff;padding:9px 20px;border-radius:4px;cursor:pointer;transition:transform .08s,opacity .15s}
+.btn:hover:not(:disabled){transform:translateY(-1px)}
+.btn:disabled{opacity:.35;cursor:not-allowed}
+.btn.ghost{background:#fff;color:#151515}
+.btn.small{font-size:15px;padding:5px 14px}
+.note{font-size:15px;color:var(--muted)}
+
+/* Start */
+.startgrid{display:grid;grid-template-columns:1.2fr 1fr;gap:40px;align-items:start;margin-top:10px}
+.panel{border:2px solid #222;padding:22px 26px;box-shadow:4px 4px 0 #bbb;background:#fff}
+.panel h3{margin:0 0 12px;font-size:22px}
+.field{margin-bottom:16px}
+.field label{display:block;font-weight:600;margin-bottom:4px}
+.field input{width:100%;font-family:inherit;font-size:18px;padding:8px 10px;border:1.5px solid #555;border-radius:3px;color:var(--ink)}
+.field input:focus{outline:3px solid #9a9a9a;outline-offset:1px}
+.intro p{margin:0 0 10px}
+.intro ol{margin:6px 0 0;padding-left:22px}
+
+/* Home */
+.actlist{margin-top:8px}
+.actrow{display:grid;grid-template-columns:44px 1fr auto;gap:14px;align-items:center;padding:16px 0;border-bottom:1px solid var(--line)}
+.actrow .num{font-weight:700;font-size:22px}
+.actrow .title{font-size:18px}
+.actrow .status{font-size:15px;color:var(--muted);margin-top:2px}
+.actrow .status.done{color:var(--ok);font-weight:600}
+.actrow .btns{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.bar{height:8px;background:#e4e4e4;border-radius:4px;margin-top:6px;max-width:360px;overflow:hidden}
+.bar i{display:block;height:100%;background:#151515;width:0;transition:width .4s}
+.finishbox{margin-top:26px;padding:18px 22px;background:var(--soft);border-left:5px solid #151515;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+
+/* Activity */
+.instr{display:flex;gap:16px;font-size:18px;margin:6px 0 14px}
+.instr .n{font-weight:700;min-width:22px}
+.items{margin-left:38px}
+.item{display:grid;grid-template-columns:28px 1fr auto;gap:12px;align-items:start;padding:12px 0 10px;border-bottom:1px dashed #e0e0e0}
+.item .l{font-weight:700;padding-top:4px}
+.item .q{padding-top:4px}
+.item .act{padding-top:2px}
+.gap{font-family:inherit;font-size:18px;border:0;border-bottom:2px dotted #333;width:200px;padding:2px 6px;margin:0 6px;background:#fafafa;color:var(--ink)}
+.gap:focus{outline:none;background:#efefef;border-bottom-style:solid}
+.vword{display:inline-flex;flex-wrap:wrap;align-items:flex-end;gap:2px;font-size:20px;letter-spacing:1px}
+.vword span{padding:0 1px}
+.vbox{width:30px;height:34px;text-align:center;font-family:inherit;font-size:20px;border:0;border-bottom:2.5px solid #333;background:#fafafa;margin:0 2px;color:var(--ink);text-transform:lowercase;padding:0}
+.vbox:focus{outline:none;background:#e9e9e9}
+.locked .gap,.locked .vbox{background:transparent}
+.gap.ok,.vbox.ok{border-bottom-color:var(--ok);color:var(--ok);font-weight:700;background:var(--okbg)}
+.gap.bad,.vbox.bad{border-bottom-color:var(--bad);color:var(--bad);font-weight:700;background:var(--badbg)}
+.fb{grid-column:2 / 4;font-size:16px;margin-top:6px;padding:6px 10px;border-radius:3px;display:none;animation:pop .25s ease}
+.fb.ok{display:block;background:var(--okbg);color:var(--ok)}
+.fb.bad{display:block;background:var(--badbg);color:var(--bad)}
+.warn{grid-column:2 / 4;font-size:15px;color:var(--bad);display:none}
+@keyframes pop{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+.actfoot{display:flex;justify-content:space-between;align-items:center;margin-top:22px;gap:14px;flex-wrap:wrap}
+
+/* Review */
+.scoreline{font-size:20px;margin:4px 0 16px}
+.rtable{width:100%;border-collapse:collapse;font-size:16px}
+.rtable th{text-align:left;border-bottom:2px solid #222;padding:8px 8px;font-size:15px}
+.rtable td{border-bottom:1px solid var(--line);padding:9px 8px;vertical-align:top}
+.rtable tr.ok td:first-child{border-left:5px solid var(--ok)}
+.rtable tr.bad td:first-child{border-left:5px solid var(--bad)}
+.tag{font-weight:700}
+.tag.ok{color:var(--ok)} .tag.bad{color:var(--bad)}
+.ans-bad{color:var(--bad);font-weight:600}
+.ans-ok{color:var(--ok);font-weight:600}
+
+/* Results */
+.resgrid{display:grid;grid-template-columns:1fr 1fr;gap:30px;margin-top:8px}
+.big{font-size:40px;font-weight:700;letter-spacing:.5px}
+.kv{display:grid;grid-template-columns:130px 1fr;gap:6px 12px;font-size:18px}
+.kv b{font-weight:600}
+.sublist{margin:0;padding:0;list-style:none}
+.sublist li{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--line);gap:10px}
+#submitStatus{margin-top:14px;font-size:16px;padding:8px 12px;border-radius:3px;background:var(--soft)}
+#submitStatus.ok{background:var(--okbg);color:var(--ok)}
+#submitStatus.bad{background:var(--badbg);color:var(--bad)}
+
+@media (max-width:820px){
+  .band,.content{padding-left:18px;padding-right:18px}
+  .rule{margin:0 18px}
+  .band h1{font-size:32px}.band h2{font-size:22px}
+  .startgrid,.resgrid{grid-template-columns:1fr}
+  .items{margin-left:0}
+  .item{grid-template-columns:24px 1fr}
+  .item .act{grid-column:2}
+  .gap{width:150px}
+  .rtable{font-size:14px}
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- START -->
+  <section class="screen active" id="s-start">
+    <div class="band">
+      <h1><span class="chev">›</span>Unit 13: Success and fame</h1>
+      <h2>Vocabulary focus: Success and fame</h2>
+    </div>
+    <div class="content">
+      <div class="startgrid">
+        <div class="intro">
+          <p><b>Unit 13 WB Vocab A pp. 124-125</b></p>
+          <p>Complete the vocabulary exercises from Workbook pages 124–125. There are three activities:</p>
+          <ol>
+            <li>Add the missing vowels (8 words)</li>
+            <li>Match the words to their definitions</li>
+            <li>Complete the sentences</li>
+          </ol>
+          <p class="note" style="margin-top:12px">You get <b>one try</b> for each question. After every activity you will see a review of your answers.</p>
+        </div>
+        <div class="panel">
+          <h3>Your details</h3>
+          <div class="field"><label for="inName">Name</label><input id="inName" autocomplete="off"></div>
+          <div class="field"><label for="inClass">Class</label><input id="inClass" autocomplete="off"></div>
+          <button class="btn" id="btnStart" disabled>Start</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOME -->
+  <section class="screen" id="s-home">
+    <div class="band" style="padding-top:24px;padding-bottom:16px">
+      <h1 style="font-size:36px"><span class="chev">›</span>Unit 13 WB Vocab A pp. 124-125</h1>
+      <h2 style="font-size:22px" id="homeWho"></h2>
+    </div>
+    <div class="content">
+      <div class="actlist" id="actList"></div>
+      <div class="finishbox">
+        <div>
+          <b>Finish &amp; submit</b>
+          <div class="note" id="finishNote">Complete all three activities to finish. Your work is not submitted until you click <b>Finish &amp; Submit</b>.</div>
+        </div>
+        <button class="btn" id="btnFinish" disabled>Finish &amp; Submit</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ACTIVITY -->
+  <section class="screen" id="s-act">
+    <div class="content">
+      <div class="instr"><span class="n" id="actNum"></span><span id="actInstr"></span></div>
+      <div class="items" id="actItems"></div>
+      <div class="actfoot">
+        <button class="btn ghost small" id="btnActHome">← Home</button>
+        <span class="note" id="actProg"></span>
+        <button class="btn" id="btnActDone" disabled>Finish activity</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- REVIEW -->
+  <section class="screen" id="s-review">
+    <div class="content">
+      <h2 style="margin:0 0 4px;font-weight:600" id="revTitle"></h2>
+      <div class="scoreline" id="revScore"></div>
+      <table class="rtable">
+        <thead><tr><th style="width:44px"></th><th>Question</th><th>Your answer</th><th>Correct answer</th><th>Explanation</th></tr></thead>
+        <tbody id="revBody"></tbody>
+      </table>
+      <div class="actfoot"><span></span><button class="btn" id="btnRevBack">Back to home</button></div>
+    </div>
+  </section>
+
+  <!-- RESULTS -->
+  <section class="screen" id="s-results">
+    <div class="band" style="padding-top:24px;padding-bottom:16px">
+      <h1 style="font-size:36px"><span class="chev">›</span>Results</h1>
+      <h2 style="font-size:22px">Unit 13 WB Vocab A pp. 124-125</h2>
+    </div>
+    <div class="content">
+      <div class="resgrid">
+        <div>
+          <div class="kv">
+            <b>Name</b><span id="rName"></span>
+            <b>Class</b><span id="rClass"></span>
+            <b>Time</b><span id="rTime"></span>
+          </div>
+          <div style="margin-top:18px" class="note">Scores (Activities 1, 2, 3)</div>
+          <div class="big" id="rScores"></div>
+          <div id="submitStatus">Sending your results…</div>
+          <button class="btn small" id="btnResend" style="display:none;margin-top:10px">Send again</button>
+        </div>
+        <div>
+          <h3 style="margin:0 0 6px">Review your answers</h3>
+          <ul class="sublist" id="rReview"></ul>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script>
+/* ===================== DATA ===================== */
+var GAME_NAME = 'Unit 13 WB Vocab A pp. 124-125';
+var GAME_DATA_ENDPOINT = 'https://script.google.com/macros/s/AKfycbwEdGlILb09xvDeqX9EZGHXOTqQA8Um7Se0nojnr2vC4ujaGAaV4iz7TwDWB1Pxbf7F2Q/exec';
+
+var ACTS = [
+  {
+    num: 1, short: 'Add the missing vowels',
+    instr: 'Add the missing vowels to complete these <b>eight</b> words from Unit 13 in the Coursebook.',
+    type: 'vowels',
+    items: [
+      {l:'a', p:'[a]mb[a]ss[a]d[o]r', ex:'<b>ambassador</b>: a person who represents a country or an organisation.'},
+      {l:'b', p:'[a]w[a]rd', ex:'<b>award</b>: a prize given to someone after an official decision.'},
+      {l:'c', p:'f[e]r[o]c[i][o][u]s', ex:'<b>ferocious</b>: very strong, fierce and forceful. Note the vowel group -ious.'},
+      {l:'d', p:'h[o]n[o][u]r', ex:'<b>honour</b>: respect, or something that makes you feel proud. British spelling ends in -our.'},
+      {l:'e', p:'pr[a][i]s[e]', ex:'<b>praise</b>: to say good things about someone. Note the vowel pair "ai".'},
+      {l:'f', p:'pr[o]l[i]f[i]c', ex:'<b>prolific</b>: producing a great number or amount of something.'},
+      {l:'g', p:'r[e]t[i]r[e]m[e]nt', ex:'<b>retirement</b>: stopping work, usually at a certain age (retire + -ment).'},
+      {l:'h', p:'t[e]rr[i]t[o]ry', ex:'<b>territory</b>: an area of land (or sea) belonging to a country, or an area an animal controls.'}
+    ]
+  },
+  {
+    num: 2, short: 'Words and definitions',
+    instr: 'Write the words from Activity 1 next to the correct definitions.',
+    type: 'gap',
+    items: [
+      {l:'a', b:'very strong and forceful', a:'', ans:['ferocious'], ex:'<b>Ferocious</b> means very strong and forceful, e.g. a ferocious storm.'},
+      {l:'b', b:'the act of stopping work, usually at a certain age', a:'', ans:['retirement'], ex:'<b>Retirement</b> is when someone stops working, usually because of their age.'},
+      {l:'c', b:'a prize or an amount of money that is given to someone following an official decision', a:'', ans:['award'], ex:'An <b>award</b> is a prize given after a decision by judges or an official group.'},
+      {l:'d', b:'an area of land, or sometimes sea, that is considered as belonging to or connected with a particular country', a:'', ans:['territory'], ex:'<b>Territory</b> is land (or sea) that belongs to a country.'},
+      {l:'e', b:'to speak well of someone', a:'', ans:['praise'], ex:'To <b>praise</b> someone is to say good things about them. It is the only verb in the list.'},
+      {l:'f', b:'an acknowledgement or show of respect for someone or something', a:'', ans:['honour','honor'], ex:'An <b>honour</b> is a sign of respect for someone or something.'},
+      {l:'g', b:'producing a great number or amount of something', a:'', ans:['prolific'], ex:'<b>Prolific</b> describes someone or something that produces a lot, e.g. a prolific writer.'},
+      {l:'h', b:'a person who represents, speaks for, or advertises a particular organisation or group', a:'', ans:['ambassador'], ex:'An <b>ambassador</b> represents a country, organisation or brand.'}
+    ]
+  },
+  {
+    num: 3, short: 'Complete the sentences',
+    instr: 'Use the words from Activity 1 to complete these sentences.',
+    type: 'gap',
+    items: [
+      {l:'a', b:'Carlos had the', a:'of meeting the city mayor.', ans:['honour','honor'], ex:'"Have the <b>honour</b> of doing something" means having a special privilege.'},
+      {l:'b', b:'He was probably the most', a:'songwriter of his generation.', ans:['prolific'], ex:'"The most <b>prolific</b> songwriter" means he wrote a very large number of songs.'},
+      {l:'c', b:'The man next door has a', a:'temper!', ans:['ferocious'], ex:'A <b>ferocious</b> temper is a very strong, aggressive temper. An adjective is needed before "temper".'},
+      {l:'d', b:'The teachers', a:'the students when they do well at school.', ans:['praise'], ex:'A verb is needed after "The teachers": they <b>praise</b> (speak well of) the students.'},
+      {l:'e', b:'She received an', a:'for her services to the community.', ans:['award'], ex:'You <b>receive an award</b> for good work. "An" shows the word begins with a vowel sound.'},
+      {l:'f', b:'She\u2019s a former', a:'to the United States.', ans:['ambassador'], ex:'An <b>ambassador</b> to a country represents their own country there.'},
+      {l:'g', b:'The lions avoid that part of the savannah \u2013 it\u2019s not their', a:'', ans:['territory'], ex:'Animals stay in their own <b>territory</b>, the area they control.'},
+      {l:'h', b:'What is the normal', a:'age in this country?', ans:['retirement'], ex:'<b>Retirement age</b> is the age at which people usually stop working.'}
+    ]
+  }
+];
+
+/* parse vowel patterns */
+ACTS[0].items.forEach(function(it){
+  var segs = [], re = /\[([a-z])\]|([^\[]+)/g, m;
+  while ((m = re.exec(it.p))) { segs.push(m[1] ? {blank:m[1]} : {txt:m[2]}); }
+  it.segs = segs;
+  it.word = it.p.replace(/[\[\]]/g,'');
+  it.blankForm = segs.map(function(s){return s.blank ? '_' : s.txt;}).join('');
+});
+
+/* ===================== STATE ===================== */
+var student = {name:'', cls:''};
+var startTime = null, endTime = null;
+var submitted = false, submitting = false;
+var curAct = null;
+var state = ACTS.map(function(a){
+  return { order: shuffle(a.items.map(function(_,i){return i;})), res:{}, done:false };
+});
+
+function shuffle(arr){
+  var a = arr.slice();
+  for (var i=a.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=a[i]; a[i]=a[j]; a[j]=t; }
+  return a;
+}
+function norm(s){
+  return String(s||'').toLowerCase().replace(/[\u2018\u2019]/g,"'").replace(/\s+/g,' ').trim().replace(/[.!?,]+$/,'');
+}
+function esc(s){ return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
+function $(id){ return document.getElementById(id); }
+function show(id){
+  document.querySelectorAll('.screen').forEach(function(s){ s.classList.remove('active'); });
+  $(id).classList.add('active');
+  window.scrollTo(0,0);
+}
+function scoreOf(i){
+  var r = state[i].res, c = 0;
+  Object.keys(r).forEach(function(k){ if (r[k].correct) c++; });
+  return c;
+}
+
+/* ===================== START ===================== */
+function checkStart(){ $('btnStart').disabled = !($('inName').value.trim() && $('inClass').value.trim()); }
+$('inName').addEventListener('input', checkStart);
+$('inClass').addEventListener('input', checkStart);
+$('btnStart').addEventListener('click', function(){
+  student.name = $('inName').value.trim();
+  student.cls = $('inClass').value.trim();
+  startTime = Date.now();
+  renderHome(); show('s-home');
+});
+
+/* ===================== HOME ===================== */
+function renderHome(){
+  $('homeWho').textContent = student.name + ' \u00b7 ' + student.cls;
+  var html = '';
+  ACTS.forEach(function(a, i){
+    var st = state[i], n = Object.keys(st.res).length, tot = a.items.length;
+    var status, btns = '';
+    if (st.done) {
+      status = '<div class="status done">Completed \u2014 ' + scoreOf(i) + '/' + tot + '</div>';
+      btns = '<button class="btn ghost small" data-rev="'+i+'">Review</button>';
+    } else if (n > 0) {
+      status = '<div class="status">In progress \u2014 ' + n + '/' + tot + ' answered</div>';
+      btns = '<button class="btn small" data-go="'+i+'">Continue</button>';
+    } else {
+      status = '<div class="status">Not started</div>';
+      btns = '<button class="btn small" data-go="'+i+'">Start</button>';
+    }
+    html += '<div class="actrow"><div class="num">'+a.num+'</div><div><div class="title">'+a.instr+'</div>'+status+
+            '<div class="bar"><i style="width:'+Math.round(n/tot*100)+'%"></i></div></div><div class="btns">'+btns+'</div></div>';
+  });
+  $('actList').innerHTML = html;
+  $('actList').querySelectorAll('[data-go]').forEach(function(b){ b.onclick = function(){ openAct(+b.dataset.go); }; });
+  $('actList').querySelectorAll('[data-rev]').forEach(function(b){ b.onclick = function(){ openReview(+b.dataset.rev, 'home'); }; });
+  var all = state.every(function(s){ return s.done; });
+  $('btnFinish').disabled = !all;
+  $('finishNote').innerHTML = all
+    ? 'All activities complete. Your work is not submitted until you click <b>Finish &amp; Submit</b>.'
+    : 'Complete all three activities to finish. Your work is not submitted until you click <b>Finish &amp; Submit</b>.';
+}
+$('btnFinish').addEventListener('click', function(){ showResults(); });
+
+/* ===================== ACTIVITY ===================== */
+function openAct(i){
+  curAct = i;
+  var a = ACTS[i], st = state[i];
+  $('actNum').textContent = a.num;
+  $('actInstr').innerHTML = a.instr;
+  var html = '';
+  st.order.forEach(function(idx){
+    var it = a.items[idx], q;
+    if (a.type === 'vowels') {
+      var bi = 0;
+      q = '<span class="vword">' + it.segs.map(function(s){
+        if (s.blank) { return '<input class="vbox" maxlength="1" data-bi="'+(bi++)+'" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="missing vowel">'; }
+        return '<span>'+esc(s.txt)+'</span>';
+      }).join('') + '</span>';
+    } else {
+      q = esc(it.b) + ' <input class="gap" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="answer"> ' + esc(it.a);
+    }
+    html += '<div class="item" data-idx="'+idx+'"><div class="l">'+it.l+'</div><div class="q">'+q+'</div>'+
+            '<div class="act"><button class="btn small chk">Check</button></div>'+
+            '<div class="warn"></div><div class="fb"></div></div>';
+  });
+  $('actItems').innerHTML = html;
+
+  $('actItems').querySelectorAll('.item').forEach(function(row){
+    var idx = +row.dataset.idx;
+    var inputs = row.querySelectorAll('input');
+    inputs.forEach(function(inp, k){
+      inp.addEventListener('keydown', function(e){
+        if (e.key === 'Enter') { e.preventDefault(); doCheck(row, idx); }
+        if (a.type === 'vowels' && e.key === 'Backspace' && !inp.value && k > 0) { inputs[k-1].focus(); }
+      });
+      if (a.type === 'vowels') {
+        inp.addEventListener('input', function(){
+          inp.value = inp.value.replace(/[^a-zA-Z]/g,'').slice(-1).toLowerCase();
+          if (inp.value && k < inputs.length-1) inputs[k+1].focus();
+        });
+      }
+    });
+    row.querySelector('.chk').onclick = function(){ doCheck(row, idx); };
+    if (st.res[idx]) restoreRow(row, idx);
+  });
+  updateActProg();
+  show('s-act');
+}
+
+function doCheck(row, idx){
+  var a = ACTS[curAct], st = state[curAct], it = a.items[idx];
+  if (st.res[idx]) return;
+  var warn = row.querySelector('.warn');
+  var inputs = row.querySelectorAll('input');
+  var given, correct;
+  if (a.type === 'vowels') {
+    var letters = [].map.call(inputs, function(x){ return x.value.trim().toLowerCase(); });
+    if (letters.some(function(x){ return !x; })) { warn.textContent = 'Fill in every box before checking.'; warn.style.display='block'; return; }
+    var k = 0;
+    given = it.segs.map(function(s){ return s.blank ? letters[k++] : s.txt; }).join('');
+    correct = given === it.word;
+    st.res[idx] = {given: given, correct: correct, letters: letters};
+  } else {
+    var v = inputs[0].value;
+    if (!v.trim()) { warn.textContent = 'Type an answer before checking.'; warn.style.display='block'; return; }
+    given = v.trim();
+    correct = it.ans.indexOf(norm(v)) !== -1;
+    st.res[idx] = {given: given, correct: correct};
+  }
+  warn.style.display = 'none';
+  restoreRow(row, idx);
+  updateActProg();
+  var next = row.nextElementSibling;
+  if (next) { var ni = next.querySelector('input:not([disabled])'); if (ni) ni.focus(); }
+}
+
+function restoreRow(row, idx){
+  var a = ACTS[curAct], it = a.items[idx], r = state[curAct].res[idx];
+  var inputs = row.querySelectorAll('input');
+  row.classList.add('locked');
+  if (a.type === 'vowels') {
+    var blanks = it.segs.filter(function(s){ return s.blank; });
+    inputs.forEach(function(inp, k){
+      inp.value = r.letters[k]; inp.disabled = true;
+      inp.classList.add(r.letters[k] === blanks[k].blank ? 'ok' : 'bad');
+    });
+  } else {
+    inputs[0].value = r.given; inputs[0].disabled = true;
+    inputs[0].classList.add(r.correct ? 'ok' : 'bad');
+  }
+  var btn = row.querySelector('.chk'); btn.disabled = true; btn.textContent = r.correct ? '\u2713' : '\u2717';
+  var fb = row.querySelector('.fb');
+  var right = a.type === 'vowels' ? it.word : it.ans[0];
+  fb.className = 'fb ' + (r.correct ? 'ok' : 'bad');
+  fb.innerHTML = r.correct ? '\u2713 Correct!' : '\u2717 Not quite. The correct answer is <b>' + esc(right) + '</b>.';
+}
+
+function updateActProg(){
+  var n = Object.keys(state[curAct].res).length, tot = ACTS[curAct].items.length;
+  $('actProg').textContent = 'Answered ' + n + '/' + tot;
+  $('btnActDone').disabled = n < tot;
+}
+$('btnActHome').addEventListener('click', function(){ renderHome(); show('s-home'); });
+$('btnActDone').addEventListener('click', function(){
+  state[curAct].done = true;
+  openReview(curAct, 'home');
+});
+
+/* ===================== REVIEW ===================== */
+var reviewReturn = 'home';
+function openReview(i, ret){
+  reviewReturn = ret;
+  var a = ACTS[i], st = state[i];
+  $('revTitle').textContent = 'Review \u2014 Activity ' + a.num + ': ' + a.short;
+  $('revScore').innerHTML = 'Score: <b>' + scoreOf(i) + '/' + a.items.length + '</b>';
+  var html = '';
+  a.items.forEach(function(it, idx){
+    var r = st.res[idx] || {given:'', correct:false};
+    var q, right;
+    if (a.type === 'vowels') { q = '<span style="letter-spacing:2px">' + esc(it.blankForm) + '</span>'; right = it.word; }
+    else { q = esc(it.b) + ' ________ ' + esc(it.a); right = it.ans[0]; }
+    html += '<tr class="'+(r.correct?'ok':'bad')+'"><td><span class="tag '+(r.correct?'ok':'bad')+'">'+it.l+' '+(r.correct?'\u2713':'\u2717')+'</span></td>'+
+            '<td>'+q+'</td><td class="'+(r.correct?'ans-ok':'ans-bad')+'">'+esc(r.given||'\u2014')+'</td>'+
+            '<td><b>'+esc(right)+'</b></td><td>'+it.ex+'</td></tr>';
+  });
+  $('revBody').innerHTML = html;
+  $('btnRevBack').textContent = ret === 'results' ? 'Back to results' : 'Back to home';
+  show('s-review');
+}
+$('btnRevBack').addEventListener('click', function(){
+  if (reviewReturn === 'results') { show('s-results'); }
+  else { renderHome(); show('s-home'); }
+});
+
+/* ===================== RESULTS & SUBMIT ===================== */
+function fmtTime(ms){ var s = Math.round(ms/1000); return Math.floor(s/60) + ' min ' + (s%60) + ' sec'; }
+
+function showResults(){
+  if (!endTime) endTime = Date.now();
+  var scores = ACTS.map(function(a,i){ return scoreOf(i) + '/' + a.items.length; });
+  $('rName').textContent = student.name;
+  $('rClass').textContent = student.cls;
+  $('rTime').textContent = fmtTime(endTime - startTime);
+  $('rScores').textContent = scores.join(', ');
+  var li = '';
+  ACTS.forEach(function(a,i){
+    li += '<li><span><b>'+a.num+'</b> '+a.short+' \u2014 '+scores[i]+'</span><button class="btn ghost small" data-r="'+i+'">Review</button></li>';
+  });
+  $('rReview').innerHTML = li;
+  $('rReview').querySelectorAll('[data-r]').forEach(function(b){ b.onclick = function(){ openReview(+b.dataset.r, 'results'); }; });
+  show('s-results');
+  if (!submitted && !submitting) sendResults();
+}
+
+function buildWrongList(){
+  var out = [];
+  ACTS.forEach(function(a,i){
+    a.items.forEach(function(it, idx){
+      var r = state[i].res[idx];
+      if (r && !r.correct) out.push(a.num + it.l + ': ' + r.given);
+    });
+  });
+  return out.join(', ');
+}
+
+function submitGameData(data){
+  return fetch(GAME_DATA_ENDPOINT, {
+    method: 'POST', mode: 'no-cors',
+    headers: {'Content-Type': 'text/plain;charset=utf-8'},
+    body: JSON.stringify(data)
+  });
+}
+
+function sendResults(){
+  submitting = true;
+  var st = $('submitStatus');
+  st.className = ''; st.textContent = 'Sending your results\u2026';
+  $('btnResend').style.display = 'none';
+  var minutesPlayed = Math.max(1, Math.round((endTime - startTime)/60000));
+  var score = ACTS.map(function(a,i){ return scoreOf(i) + '/' + a.items.length; }).join(', ');
+  submitGameData({
+    gameName: GAME_NAME,
+    studentName: student.name,
+    class: student.cls,
+    score: score,
+    minutesPlayed: minutesPlayed,
+    wrongQuestions: buildWrongList(),
+    attempts: 1
+  }).then(function(){
+    submitted = true; submitting = false;
+    st.className = 'ok'; st.textContent = '\u2713 Your results have been sent to your teacher.';
+  }).catch(function(){
+    submitting = false;
+    st.className = 'bad'; st.textContent = 'Your results could not be sent. Check your internet connection and try again.';
+    $('btnResend').style.display = 'inline-block';
+  });
+}
+$('btnResend').addEventListener('click', function(){ if (!submitted && !submitting) sendResults(); });
+</script>
+</body>
+</html>
