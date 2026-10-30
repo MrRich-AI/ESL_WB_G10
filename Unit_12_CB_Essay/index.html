@@ -208,7 +208,7 @@
 
 <script>
   var FEEDBACK_PROXY_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxEXar-cSzm0BnJYp6EYfUo9lKvcgsf5mF9aGSCvVqHqMRiIkYiNqjHaLSqzeHauffGhg/exec';
-  var ESSAY_DATA_ENDPOINT = 'https://script.google.com/macros/s/AKfycbwNhsD9-6Zxcm9zz2Rq3uCwx8jxbu3KPYcLULLtjV85zPoUsCmAp5xcNnXepWfOitUSBA/exec';
+  var ESSAY_DATA_ENDPOINT = 'https://script.google.com/macros/s/AKfycbw4wtgPJ7VzRGWR3zhEtggTOKbb1WpjBCejIrFnkkig3AF7-5S5-SGeMDlHjy8wReayVw/exec';
   var ACTIVITY_NAME = 'Unit 12 Exam-Style Question (Coursebook p. 179)';
 
   var studentName = '';
@@ -246,6 +246,9 @@
     showScreen('essay-screen');
   });
 
+  var WORD_MIN = 120, WORD_MAX = 160, pasteCount = 0;   /* pasting allowed, but counted and sent to the teacher */
+  essayInput.addEventListener('paste', function(e){ var c = e.clipboardData || window.clipboardData; if (c && String(c.getData('text')).trim()) pasteCount++; });
+  essayInput.addEventListener('drop', function(){ pasteCount++; });
   essayInput.addEventListener('input', function() {
     var words = essayInput.value.trim().length === 0 ? 0 : essayInput.value.trim().split(/\s+/).length;
     wordCountEl.textContent = words + ' words (aim for 120-160)';
@@ -356,7 +359,10 @@
         duration: durationText,
         score: currentScoreText,
         feedback: currentFeedbackText,
-        essayResponse: essayText
+        essayResponse: essayText,
+        wordMin: WORD_MIN,
+        wordMax: WORD_MAX,
+        pasted: pasteCount
       })
     })
     .then(function(res) {

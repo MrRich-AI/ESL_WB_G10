@@ -241,7 +241,7 @@ body{background:var(--desk);font-family:'Source Sans 3',Arial,Helvetica,sans-ser
 <script>
 /* ===================== DATA ===================== */
 var GAME_NAME = 'Unit 13 WB Vocab B p. 125';
-var GAME_DATA_ENDPOINT = 'https://script.google.com/macros/s/AKfycbwEdGlILb09xvDeqX9EZGHXOTqQA8Um7Se0nojnr2vC4ujaGAaV4iz7TwDWB1Pxbf7F2Q/exec';
+var GAME_DATA_ENDPOINT = 'https://script.google.com/macros/s/AKfycbyLjj5ycXstxQyBeTXP6BGKuSqypnchRKtupVwvb4J7z-ydtruHviiomTw6NTcknYKL/exec';
 
 /* choice items: opts[0] is always the correct word (display order is shuffled) */
 /* gap items: parts = text strings and {ans:[...]} gaps; each gap is worth 1 mark */
@@ -554,15 +554,24 @@ function showResults(){
   if (!submitted && !submitting) sendResults();
 }
 
+/* Wrong Answers for the WB Data Collector: one line per exercise ("Ex.1: ..."), items separated by commas.
+   Wrong answers are "label student answer -> correct answer" (the sheet shows the correct answer in bold red);
+   open-ended answers are always sent, with an [AI ✓] / [AI ✗] tag. */
+function first_(a){ return Array.isArray(a) ? a[0] : a; }
+function flat_(v){ return String(v === undefined || v === null ? '' : v).replace(/\s+/g, ' ').trim(); }
+function exLines_(groups){ return groups.filter(function(g){ return g[1].length; }).map(function(g){ return 'Ex.' + g[0] + ': ' + g[1].join(', '); }); }
+function wrongItem_(label, given, correct){ return (label ? label + ' ' : '') + (flat_(given) || '(blank)') + ' → ' + flat_(correct).replace(/,/g, ''); }
+function openItem_(label, text, r){ return (label ? label + ' ' : '') + (flat_(text) || '(blank)') + (r ? ' [AI ' + (r.correct ? '✓' : '✗') + ']' : ' [no AI feedback]'); }
+
 function buildWrongList(){
-  var out = [];
-  ACTS.forEach(function(a,i){
+  return exLines_(ACTS.map(function(a, i){
+    var e = [];
     a.items.forEach(function(it, idx){
       var r = state[i].res[idx];
-      if (r && !r.correct) out.push(a.num + it.l + ': ' + r.given);
+      if (r && !r.correct) e.push(wrongItem_(it.l, r.given, it.opts ? it.opts[0] : gapsOf(it).map(function(g){ return g.ans[0]; }).join(' / ')));
     });
-  });
-  return out.join(', ');
+    return [a.num, e];
+  }));
 }
 
 function submitGameData(data){
